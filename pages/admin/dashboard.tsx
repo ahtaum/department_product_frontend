@@ -17,7 +17,7 @@ export default function Dashboard() {
 
         <section id="dashboard-admin-page" className="container my-4 p-3">
 
-            <h1 className="text-xl font-bold mb-4">Dashboard Page</h1>
+            <h1 className="text-xl font-bold mb-4">Dashboard</h1>
 
             <div className="flex flex-col lg:flex-row md:flex-row justify-between gap-8">
                 <div className="card w-full bg-base-100 shadow-xl">

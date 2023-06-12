@@ -25,6 +25,7 @@ export const Menu = () => {
 
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                         <li><Link href="/admin/dashboard">Dashboard</Link></li>
+                        <li><Link href="/admin/items">Items</Link></li>
                         <li>
                             <a>Parent</a>
                             <ul className="p-2">
@@ -40,6 +41,7 @@ export const Menu = () => {
             <div className="navbar-end hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
                     <li><Link href="/admin/dashboard">Dashboard</Link></li>
+                    <li><Link href="/admin/items">Items</Link></li>
                     <li tabIndex={0}>
                         <details>
                         <summary>Parent</summary>
