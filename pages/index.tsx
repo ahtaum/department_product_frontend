@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Cookies from "js-cookie"
 import axios from "axios"
 import { MainLayout } from '@/layouts/MainLayout'
+import UrlApi from '@/config/urlApi'
 
 Login.layout = MainLayout
 
@@ -18,23 +19,24 @@ export default function Login() {
   const [authFail, setAuthFail] = useState<Boolean>(false)
   const [loading, setLoading] = useState<Boolean>(false)
 
-  let handleLogin = async (e: any) => {
+  const handleLogin = async (e: any) => {
       e.preventDefault()
 
-      await axios.post(``, {
+      await axios.post(`${UrlApi.data_api}users/login`, {
           email: email,
           password: password
       }).then((res) => {
           setStatus(false)
           setAuthFail(false)
           setLoading(true)
-          Cookies.set('token_admin', res.data.token.token, { expires: 1 })
-          Cookies.set("data_admin", JSON.stringify(res.data.data))
-          // router.push('/admin/dashboard')
+          Cookies.set('token_admin', res.data.token.token, { expires: new Date(res.data.token.expires_at) })
+          Cookies.set('data_admin', JSON.stringify(res.data.user_data))
+          router.push('/admin/dashboard')
       }).catch((error) => {
           setStatus(true)
           setAuthFail(true)
           setLoading(false)
+          alert(error.message)
       })
   }
 
@@ -49,7 +51,7 @@ export default function Login() {
 
         <div className="card bg-base-100 shadow-xl lg:p-8">
           <div className="card-body">
-            <form>
+            <form onSubmit={handleLogin}>
               <h1 className="text-center font-bold mb-4 text-2xl">Login</h1>
 
               { authFail && (
