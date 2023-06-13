@@ -51,7 +51,7 @@ export default function Customers() {
     }
 
     // Search Customers
-    const searchItems = () => {
+    const searchCustomers = () => {
         const searchParam = ["name", "code"]
       
         return data?.filter((dt: any) => {
@@ -109,7 +109,7 @@ export default function Customers() {
             <div className="mb-4 flex justify-between">
                 <Link href="/admin/addCustomer" className="btn btn-primary text-xl"><FiPlus /></Link>
 
-                <input type="text" placeholder="Search Items ..." className="input input-bordered lg:w-96 md:w-96" name="search-items" onChange={(e) => setSc(e.target.value)} value={sc} />
+                <input type="text" placeholder="Search Customers ..." className="input input-bordered lg:w-96 md:w-96" name="search-customers" onChange={(e) => setSc(e.target.value)} value={sc} />
             </div>
 
             <h1 className="my-4 text-center font-bold text-2xl">Customers</h1>
@@ -130,7 +130,7 @@ export default function Customers() {
                         </tr>
                         </thead> 
                         <tbody>
-                            { data && searchItems().map((customer: any, index: number) => (
+                            { data && searchCustomers().map((customer: any, index: number) => (
                                 <tr key={index}>
                                     <th>{ index + 1 }</th> 
                                     <td>{ customer.code }</td> 
