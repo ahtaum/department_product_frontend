@@ -84,7 +84,7 @@ export default function Items() {
                                     <td>{ item.price }</td> 
                                     <td>{ formatDistanceToNow(new Date(item.updated_at), { addSuffix: true }) }</td>
                                     <td className="flex gap-4">
-                                        <span className="badge badge-success">Edit</span>
+                                        <Link href={`/admin/${item.id}`} className="badge badge-success">Edit</Link>
                                         <span className="badge badge-error cursor-pointer">Delete</span>
                                     </td>
                                 </tr>
