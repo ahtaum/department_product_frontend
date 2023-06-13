@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { FiTrash, FiPlus, FiEdit } from 'react-icons/fi'
 import Head from 'next/head'
 import Link from 'next/link'
 import axios from 'axios'
@@ -107,7 +108,7 @@ export default function Items() {
         <section id="items-admin-page" className="container my-4 p-3">
             
             <div className="mb-4 flex justify-between">
-                <Link href="/admin/addItem" className="btn btn-primary">Add</Link>
+                <Link href="/admin/addItem" className="btn btn-primary text-xl"><FiPlus /></Link>
 
                 <input type="text" placeholder="Search Items ..." className="input input-bordered lg:w-96 md:w-96" name="search-items" onChange={(e) => setSc(e.target.value)} value={sc} />
             </div>
@@ -138,8 +139,8 @@ export default function Items() {
                                     <td>{ item.price }</td> 
                                     <td>{ formatDistanceToNow(new Date(item.updated_at), { addSuffix: true }) }</td>
                                     <td className="flex gap-4">
-                                        <Link href={`/admin/${item.id}`} className="badge badge-success">Edit</Link>
-                                         <label htmlFor="delete-modal" className="badge badge-error gap-2 p-3 cursor-pointer" onClick={ () => setId(item.id) }>Delete</label>
+                                        <Link href={`/admin/${item.id}`} className="badge badge-success gap-2 p-3 hover:text-white"><FiEdit /></Link>
+                                         <label htmlFor="delete-modal" className="badge badge-error gap-2 p-3 cursor-pointer hover:text-white" onClick={ () => setId(item.id) }><FiTrash /></label>
                                     </td>
                                 </tr>
                             )) }
