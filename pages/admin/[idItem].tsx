@@ -14,11 +14,10 @@ export default function EditItem() {
     const router = useRouter()
     const { idItem } = router.query
 
-    const [id, setId] = useState<number>(0)
     const [name, setName] = useState<string>("")
     const [price, setPrice] = useState<number | null>(null)
     const [errors, setErrors] = useState<Record<string, string>>({})
-    const [status, setStatus] = useState<boolean>(false)
+    const [notif, setNotif] = useState<boolean>(false)
 
     useEffect(() => {
         async function fetchData() {
@@ -28,7 +27,6 @@ export default function EditItem() {
 
                 setName(item.name)
                 setPrice(item.price)
-                setId(Number(idItem))
             } catch (error: any) {
                 alert(error.message)
             }
@@ -39,6 +37,7 @@ export default function EditItem() {
         }
     }, [router.isReady])
 
+    // Edit Item
     const handleSubmit = async (e: any) => {
         e.preventDefault()
       
@@ -47,12 +46,12 @@ export default function EditItem() {
         await axios
           .put(`${UrlApi.data_api}items/update/${idItem}`, { name, price }, { headers: { "Authorization": "Bearer " + userAuth } })
           .then((res) => {
-            setStatus(true)
+            setNotif(true)
             setName("")
             setPrice(null)
           })
           .catch((error) => {
-            setStatus(false)
+            setNotif(false)
             if (error.response && error.response.data && error.response.data.errors) {
                 const apiErrors = error.response.data.errors
                 const fieldErrors: Record<string, string> = {}
@@ -66,6 +65,23 @@ export default function EditItem() {
         })
     }
 
+    // Notification Component
+    const Notification = ({ message }: any) => {
+        setTimeout(() => {
+            setNotif(false)
+        }, 10000)
+
+        return (
+            <div className="toast z-10">
+                <div className="alert alert-success">
+                    <div>
+                        <span>{ message }</span>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <>
         
@@ -73,16 +89,12 @@ export default function EditItem() {
             <title>Edit Item</title>
         </Head>
 
+        {/* Notification */}
+        { notif && <Notification message="Item Edit Successfuly!" /> }
+
         <section id="edit-item-admin-page" className="container my-4 p-3">
 
             <h1 className="text-2xl font-bold my-4">Add Item</h1>
-
-            { status && (   
-                <div className="alert alert-success my-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    <span>Edit Item Successfuly!</span>
-                </div>
-            ) }
 
             <div className="card bg-base-100 shadow-xl">
                 <div className="card-body">

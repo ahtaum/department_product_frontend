@@ -14,8 +14,9 @@ export default function AddItem() {
     const [name, setName] = useState<string>("")
     const [price, setPrice] = useState<number | null>(null)
     const [errors, setErrors] = useState<Record<string, string>>({})
-    const [status, setStatus] = useState<boolean>(false)
+    const [notif, setNotif] = useState<boolean>(false)
 
+    // Add Item
     const handleSubmit = async (e: any) => {
         e.preventDefault()
       
@@ -24,12 +25,12 @@ export default function AddItem() {
         await axios
           .post(`${UrlApi.data_api}items/add`, { name, price }, { headers: { "Authorization": "Bearer " + userAuth } })
           .then((res) => {
-            setStatus(true)
+            setNotif(true)
             setName("")
             setPrice(null)
           })
           .catch((error) => {
-            setStatus(false)
+            setNotif(false)
             if (error.response && error.response.data && error.response.data.errors) {
                 const apiErrors = error.response.data.errors
                 const fieldErrors: Record<string, string> = {}
@@ -41,7 +42,24 @@ export default function AddItem() {
                 setErrors({ error: 'An error occurred while adding the item.' })
             }
         })
-    }      
+    }
+    
+    // Notification Component
+    const Notification = ({ message }: any) => {
+        setTimeout(() => {
+            setNotif(false)
+        }, 10000)
+
+        return (
+            <div className="toast z-10">
+                <div className="alert alert-success">
+                    <div>
+                        <span>{ message }</span>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <>
@@ -50,16 +68,13 @@ export default function AddItem() {
                 <title>Add Item</title>
             </Head>
 
+            {/* Notification */}
+            { notif && <Notification message="Item Added Successfuly!" /> }
+
+            {/* Form Add Item */}
             <section id="add-item-page-admin" className="container my-4 p-3">
 
                 <h1 className="text-2xl font-bold my-4">Add Item</h1>
-
-                { status && (   
-                    <div className="alert alert-success my-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <span>Add Item Successfuly!</span>
-                    </div>
-                ) }
 
                 <div className="card bg-base-100 shadow-xl">
                     <div className="card-body">

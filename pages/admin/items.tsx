@@ -14,9 +14,13 @@ export default function Items() {
     const [loading, setLoading] = useState<boolean>(true)
     const [sc, setSc] = useState("")
     const [error, setError] = useState<string>("")
+    const [id, setId] = useState<number>()
+    const [notif, setNotif] = useState<boolean>(false)
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
     const userAuth = Cookies.get("token_admin")
 
+    // Fetch Items
     useEffect(() => {
         setLoading(true)
 
@@ -29,8 +33,24 @@ export default function Items() {
             setError("An error occurred while fetching the items.")
         })
 
-    }, [])
+    }, [notif])
 
+    // Delete Items
+    const deletePost = async (e: any) => {
+        e.preventDefault()
+
+        await axios.delete(`${UrlApi.data_api}items/delete/${id}`, { headers: { "Authorization" : "Bearer "+ userAuth } }).then((response) => {
+            setNotif(true)
+            // window.location.reload()
+        }).catch((error: any) => {
+            alert(error.message)
+            setNotif(false)
+        })
+
+        setIsModalOpen(false)
+    }
+
+    // Search Items
     const searchItems = () => {
         const searchParam = ["name", "code"]
       
@@ -41,7 +61,24 @@ export default function Items() {
             )
           })
         })
-    }      
+    }
+
+    // Notification Component
+    const Notification = ({ message }: any) => {
+        setTimeout(() => {
+            setNotif(false)
+        }, 10000)
+
+        return (
+            <div className="toast z-10">
+                <div className="alert alert-success">
+                    <div>
+                        <span>{ message }</span>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <>
@@ -49,6 +86,23 @@ export default function Items() {
         <Head>
             <title>Items</title>
         </Head>
+
+        {/* Notification */}
+        { notif && <Notification message="Item Deleted Successfuly!" /> }
+
+        {/* Delete Modal */}
+        <input type="checkbox" id="delete-modal" className="modal-toggle" checked={isModalOpen} onChange={() => setIsModalOpen(!isModalOpen)} />
+        <div className="modal">
+            <div className="modal-box flex flex-col gap-8">
+                <h3 className="font-bold text-lg text-center">Are You Sure to DELETED this Post?</h3>
+
+                <div className="modal-action flex justify-between">
+                    <label htmlFor="delete-modal" className="btn btn-error">close</label>
+
+                    <label htmlFor="delete-modal" className="btn btn-warning" onClick={deletePost}>Delete</label>
+                </div>
+            </div>
+        </div>
 
         <section id="items-admin-page" className="container my-4 p-3">
             
@@ -85,7 +139,7 @@ export default function Items() {
                                     <td>{ formatDistanceToNow(new Date(item.updated_at), { addSuffix: true }) }</td>
                                     <td className="flex gap-4">
                                         <Link href={`/admin/${item.id}`} className="badge badge-success">Edit</Link>
-                                        <span className="badge badge-error cursor-pointer">Delete</span>
+                                         <label htmlFor="delete-modal" className="badge badge-error gap-2 p-3 cursor-pointer" onClick={ () => setId(item.id) }>Delete</label>
                                     </td>
                                 </tr>
                             )) }
