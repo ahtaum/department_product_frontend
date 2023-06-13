@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
 import Cookies from 'js-cookie'
@@ -6,28 +7,48 @@ import UrlApi from '@/config/urlApi'
 import AdminLayout from '@/layouts/AdminLayout'
 import axios from 'axios'
 
-AddItem.layout = AdminLayout
+EditCustomer.layout = AdminLayout
 
-export default function AddItem() {
+export default function EditCustomer() {
     const userAuth = Cookies.get("token_admin")
+    const router = useRouter()
+    const { idCustomer } = router.query
 
     const [name, setName] = useState<string>("")
-    const [price, setPrice] = useState<number | null>(null)
+    const [phone, setPhone] = useState<string>("")
     const [errors, setErrors] = useState<Record<string, string>>({})
     const [notif, setNotif] = useState<boolean>(false)
 
-    // Add Item
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await axios.get(`${UrlApi.data_api}customers/${idCustomer}`, { headers: { "Authorization": "Bearer " + userAuth } })
+                const { customer } = response.data
+
+                setName(customer.name)
+                setPhone(customer.phone)
+            } catch (error: any) {
+                alert(error.message)
+            }
+        }
+
+        if (router.isReady) {
+            fetchData()
+        }
+    }, [router.isReady])
+
+    // Edit Item
     const handleSubmit = async (e: any) => {
         e.preventDefault()
       
         setErrors({})
       
         await axios
-          .post(`${UrlApi.data_api}items/add`, { name, price }, { headers: { "Authorization": "Bearer " + userAuth } })
+          .put(`${UrlApi.data_api}customers/update/${idCustomer}`, { name, phone }, { headers: { "Authorization": "Bearer " + userAuth } })
           .then((res) => {
             setNotif(true)
             setName("")
-            setPrice(null)
+            setPhone("")
           })
           .catch((error) => {
             setNotif(false)
@@ -45,7 +66,7 @@ export default function AddItem() {
             }
         })
     }
-    
+
     // Notification Component
     const Notification = ({ message }: any) => {
         setTimeout(() => {
@@ -65,18 +86,17 @@ export default function AddItem() {
 
     return (
         <>
-
+        
         <Head>
-            <title>Add Item</title>
+            <title>Edit Customer</title>
         </Head>
 
         {/* Notification */}
-        { notif && <Notification message="Item Added Successfuly!" /> }
+        { notif && <Notification message="Customer Edit Successfuly!" /> }
 
-        {/* Form Add Item */}
-        <section id="add-item-page-admin" className="container my-4 p-3">
+        <section id="edit-customer-admin-page" className="container my-4 p-3">
 
-            <h1 className="text-2xl font-bold my-4">Add Item</h1>
+            <h1 className="text-2xl font-bold my-4">Edit Customer</h1>
 
             <div className="card bg-base-100 shadow-xl">
                 <div className="card-body">
@@ -92,17 +112,17 @@ export default function AddItem() {
 
                         <div className="form-control mb-4">
                             <label className="label">
-                                <span className="label-text">Price</span>
+                                <span className="label-text">Phone Number</span>
                             </label>
 
-                            <input type="number" placeholder="Type here" className="input input-bordered" name="price" onChange={(e) => setPrice(e.target.value ? Number(e.target.value) : null)} value={price !== null ? price.toString() : ''} />
-                            {errors && errors.price && <div className="text-red-500">{errors.price}</div>}
+                            <input type="text" placeholder="Type here" className="input input-bordered" name="phone" onChange={(e) => setPhone(e.target.value)} value={phone} />
+                            {errors && errors.phone && <div className="text-red-500">{errors.phone}</div>}
                         </div>
 
                         <div className="flex justify-between">
-                            <Link href="/admin/items" className="btn btn-error">Back</Link>
+                            <Link href="/admin/customers" className="btn btn-error">Back</Link>
                             
-                            <button className="btn btn-primary" type="submit">Add</button>
+                            <button className="btn btn-primary" type="submit">Edit</button>
                         </div>
 
                     </form>

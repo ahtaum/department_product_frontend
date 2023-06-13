@@ -26,13 +26,7 @@ export const Menu = () => {
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                         <li><Link href="/admin/dashboard">Dashboard</Link></li>
                         <li><Link href="/admin/items">Items</Link></li>
-                        <li>
-                            <a>Parent</a>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </li>
+                        <li><Link href="/admin/customers">Customers</Link></li>
                         <li><p onClick={handleLogout}>Logout</p></li>
                     </ul>
                 </div>
@@ -42,15 +36,7 @@ export const Menu = () => {
                 <ul className="menu menu-horizontal px-1">
                     <li><Link href="/admin/dashboard">Dashboard</Link></li>
                     <li><Link href="/admin/items">Items</Link></li>
-                    <li tabIndex={0}>
-                        <details>
-                        <summary>Parent</summary>
-                        <ul className="p-2">
-                            <li><a>Submenu 1</a></li>
-                            <li><a>Submenu 2</a></li>
-                        </ul>
-                        </details>
-                    </li>
+                    <li><Link href="/admin/customers">Customers</Link></li>
                     <li><p onClick={handleLogout}>Logout</p></li>
                 </ul>
             </div>
