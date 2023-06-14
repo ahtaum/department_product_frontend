@@ -60,7 +60,7 @@ export default function AddTransaction() {
       itemId: 0,
       quantity: 0,
     }
-    
+
     setSelectedItems([...selectedItems, newItem])
   }
 
@@ -87,6 +87,31 @@ export default function AddTransaction() {
   // Menghitung total harga
   const totalPrice = subtotal - discount + shippingCost
 
+  const addTransaction = async (e: any) => {
+    e.preventDefault()
+
+    const newTransaction = {
+      customerId,
+      items: selectedItems,
+      discount,
+      shippingCost,
+      date,
+    };
+
+    axios.post(`${UrlApi.data_api}sales/createSale`, newTransaction, { headers: { Authorization: `Bearer ${userAuth}` } })
+      .then(() => {
+        setNotif(true)
+        setSelectedItems([])
+        setCustomerId(0)
+        setDiscount(0)
+        setShippingCost(0)
+        setDate('')
+      })
+      .catch((error) => {
+        alert(error.message)
+      })
+  }
+
   return (
     <>
       <Head>
@@ -102,7 +127,7 @@ export default function AddTransaction() {
 
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
-            <form>
+            <form onSubmit={addTransaction}>
               <div className="form-control mb-4">
                 <label className="label mb-2">
                   <span className="label-text">Date Transaction</span>
