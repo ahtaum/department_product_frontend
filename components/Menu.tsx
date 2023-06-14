@@ -28,9 +28,9 @@ export const Menu = () => {
                         <li tabIndex={0}>
                             <details>
                             <summary>Transaction</summary>
-                                <ul className="p-2">
-                                    <li><a>Submenu 1</a></li>
-                                    <li><a>Submenu 2</a></li>
+                                <ul className="p-2 z-10">
+                                    <li><a>Data Transaction</a></li>
+                                    <li><a>Order</a></li>
                                 </ul>
                             </details>
                         </li>
@@ -47,9 +47,9 @@ export const Menu = () => {
                     <li tabIndex={0}>
                         <details>
                         <summary>Transaction</summary>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
+                            <ul className="p-2 z-10">
+                                <li><a>Data Transaction</a></li>
+                                <li><a>Order</a></li>
                             </ul>
                         </details>
                     </li>
