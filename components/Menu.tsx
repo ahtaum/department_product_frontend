@@ -27,10 +27,10 @@ export const Menu = () => {
                         <li><Link href="/admin/dashboard">Dashboard</Link></li>
                         <li tabIndex={0}>
                             <details>
-                            <summary>Transaction</summary>
+                                <summary>Transaction</summary>
                                 <ul className="p-2 z-10">
-                                    <li><a>Data Transaction</a></li>
-                                    <li><a>Order</a></li>
+                                    <li><Link href="/admin/transaction">Data Transaction</Link></li>
+                                    <li><Link href="/admin/addTransaction">Order</Link></li>
                                 </ul>
                             </details>
                         </li>
@@ -46,10 +46,10 @@ export const Menu = () => {
                     <li><Link href="/admin/dashboard">Dashboard</Link></li>
                     <li tabIndex={0}>
                         <details>
-                        <summary>Transaction</summary>
+                            <summary>Transaction</summary>
                             <ul className="p-2 z-10">
-                                <li><a>Data Transaction</a></li>
-                                <li><a>Order</a></li>
+                                <li><Link href="/admin/transaction">Data Transaction</Link></li>
+                                <li><Link href="/admin/addTransaction">Order</Link></li>
                             </ul>
                         </details>
                     </li>

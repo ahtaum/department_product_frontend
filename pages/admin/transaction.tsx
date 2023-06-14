@@ -58,7 +58,7 @@ export default function Transaction() {
         <section id="transaction-page" className="container my-4 p-3">
 
             <div className="mb-4 flex justify-between">
-                <Link href="/admin/addItem" className="btn btn-primary text-xl"><FiPlus /></Link>
+                <Link href="/admin/addTransaction" className="btn btn-primary text-xl"><FiPlus /></Link>
 
                 <input type="text" placeholder="Search Items ..." className="input input-bordered lg:w-96 md:w-96" name="search-items" onChange={(e) => setSc(e.target.value)} value={sc} />
             </div>
@@ -71,17 +71,17 @@ export default function Transaction() {
                 <div className="overflow-x-auto my-8">
                     <table className="table">
                         <thead>
-                        <tr>
-                            <th></th> 
-                            <th>No Transaksi</th> 
-                            <th>Tanggal</th> 
-                            <th>Nama Customer</th> 
-                            <th>Jumlah Barang</th>
-                            <th>Sub Total</th>
-                            <th>Diskon</th>
-                            <th>Ongkir</th>
-                            <th>Total</th>
-                        </tr>
+                            <tr>
+                                <th></th> 
+                                <th>No Transaksi</th> 
+                                <th>Tanggal</th> 
+                                <th>Nama Customer</th> 
+                                <th>Jumlah Barang</th>
+                                <th>Sub Total</th>
+                                <th>Diskon</th>
+                                <th>Ongkir</th>
+                                <th>Total</th>
+                            </tr>
                         </thead> 
                         <tbody>
                             { data && searchItems().map((transaction: any, index: number) => (
