@@ -58,7 +58,7 @@ export default function AddTransaction() {
   const addItem = () => {
     const newItem = {
       itemId: 0,
-      quantity: 0
+      quantity: 0,
     }
     setSelectedItems([...selectedItems, newItem])
   }
@@ -69,6 +69,20 @@ export default function AddTransaction() {
     updatedItems.splice(index, 1)
     setSelectedItems(updatedItems)
   }
+
+  // Menghitung subtotal
+  const subtotal = selectedItems.reduce((total, selectedItem) => {
+    const item = items.find((item) => item.id === selectedItem.itemId)
+  
+    if (item) {
+      return total + item.price * selectedItem.quantity
+    }
+  
+    return total
+  }, 0)
+  
+  // Menghitung total harga
+  const totalPrice = subtotal - discount + shippingCost
 
   return (
     <>
@@ -86,93 +100,194 @@ export default function AddTransaction() {
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
             <form>
-                <div className="form-control mb-4">
-                    <label className="label mb-2">
-                        <span className="label-text">Date Transaction</span>
-                    </label>
+              <div className="form-control mb-4">
+                <label className="label mb-2">
+                  <span className="label-text">Date Transaction</span>
+                </label>
 
-                    <input type="datetime-local" placeholder="Type here" className="input input-bordered" value={date} onChange={(e) => setDate(e.target.value)} name="date" />
-                </div>
+                <input
+                  type="datetime-local"
+                  placeholder="Type here"
+                  className="input input-bordered"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  name="date"
+                />
+              </div>
 
-                <div className="form-control mb-4">
-                    <label className="label mb-2">
-                        <span className="label-text">Customers Name</span>
-                    </label>
+              <div className="form-control mb-4">
+                <label className="label mb-2">
+                  <span className="label-text">Customers Name</span>
+                </label>
 
-                    <select className="select select-bordered" value={customerId} onChange={(e) => setCustomerId(Number(e.target.value))} name="customerId">
-                        <option disabled value={0}>Customer</option>
-                        {customers.map((customer: any) => (
-                            <option key={customer.id} value={customer.id}>
-                                {customer.name}
-                            </option>
+                <select
+                  className="select select-bordered"
+                  value={customerId}
+                  onChange={(e) => setCustomerId(Number(e.target.value))}
+                  name="customerId"
+                >
+                  <option disabled value={0}>
+                    Customer
+                  </option>
+                  {customers.map((customer: any) => (
+                    <option key={customer.id} value={customer.id}>
+                      {customer.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-4">
+                {selectedItems.map((selectedItem, index) => (
+                  <div key={index} className="flex items-center mb-2">
+                    <div className="w-2/3">
+                      <label className="label">
+                        <span className="label-text">Item Name</span>
+                      </label>
+
+                      <select
+                        className="select select-bordered"
+                        value={selectedItem.itemId}
+                        onChange={(e) => {
+                          const updatedItems = [...selectedItems]
+                          updatedItems[index].itemId = Number(e.target.value)
+                          setSelectedItems(updatedItems)
+                        }}
+                        name="itemId"
+                      >
+                        <option disabled value={0}>
+                          Select Item
+                        </option>
+                        {items.map((item: any) => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
                         ))}
-                    </select>
-                </div>
+                      </select>
+                    </div>
 
-                <div className="mb-4">
-                    {selectedItems.map((selectedItem, index) => (
-                        <div key={index} className="flex items-center mb-2">
-                            <div className="w-2/3">
-                                <label className="label">
-                                    <span className="label-text">Item Name</span>
-                                </label>
+                    <div className="w-1/3">
+                      <label className="label">
+                        <span className="label-text">Quantity</span>
+                      </label>
 
-                                <select className="select select-bordered" value={selectedItem.itemId}
-                                onChange={(e) => {
-                                    const updatedItems = [...selectedItems]
-                                    updatedItems[index].itemId = Number(e.target.value)
-                                    setSelectedItems(updatedItems)
-                                }} name="itemId">
-                                    <option disabled value={0}>Select Item</option>
-                                    {items.map((item: any) => (
-                                        <option key={item.id} value={item.id}>{item.name}</option>
-                                    ))}
-                                </select>
-                            </div>
+                      <input
+                        type="number"
+                        placeholder="Type here"
+                        className="input input-bordered"
+                        value={selectedItem.quantity}
+                        onChange={(e) => {
+                          const updatedItems = [...selectedItems]
+                          updatedItems[index].quantity = Number(e.target.value)
+                          setSelectedItems(updatedItems)
+                        }}
+                        name="quantity"
+                      />
+                    </div>
 
-                            <div className="w-1/3">
-                                <label className="label">
-                                    <span className="label-text">Quantity</span>
-                                </label>
+                    <div>
+                      <button
+                        type="button"
+                        className="btn btn-error btn-sm ml-2"
+                        onClick={() => removeItem(index)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ))}
 
-                                <input type="number" placeholder="Type here" className="input input-bordered"value={selectedItem.quantity} onChange={(e) => {
-                                    const updatedItems = [...selectedItems]
-                                    updatedItems[index].quantity = Number(e.target.value)
-                                    setSelectedItems(updatedItems)
-                                }} name="quantity" />
-                            </div>
+                <button type="button" className="btn btn-info w-full" onClick={addItem}>
+                  Add Item
+                </button>
+              </div>
 
-                            <div>
-                                <button type="button" className="btn btn-error btn-sm ml-2" onClick={() => removeItem(index)}>Remove</button>
-                            </div>
-                        </div>
-                    ))}
-                    
-                    <button type="button" className="btn btn-info w-full" onClick={addItem}>Add Item</button>
-                </div>
+              <div className="form-control mb-4">
+                <label className="label mb-2">
+                  <span className="label-text">Discount</span>
+                </label>
 
-                <div className="form-control mb-4">
-                    <label className="label mb-2">
-                        <span className="label-text">Discount</span>
-                    </label>
+                <input
+                  type="number"
+                  placeholder="Type here"
+                  className="input input-bordered"
+                  value={discount}
+                  onChange={(e) => setDiscount(Number(e.target.value))}
+                  name="discount"
+                />
+              </div>
 
-                    <input type="number" placeholder="Type here" className="input input-bordered" value={discount} onChange={(e) => setDiscount(Number(e.target.value))} name="discount" />
-                </div>
+              <div className="form-control mb-4">
+                <label className="label mb-2">
+                  <span className="label-text">Shipping Cost</span>
+                </label>
 
-                <div className="form-control mb-4">
-                    <label className="label mb-2">
-                        <span className="label-text">Shipping Cost</span>
-                    </label>
+                <input
+                  type="number"
+                  placeholder="Type here"
+                  className="input input-bordered"
+                  value={shippingCost}
+                  onChange={(e) => setShippingCost(Number(e.target.value))}
+                  name="shippingCost"
+                />
+              </div>
 
-                    <input type="number" placeholder="Type here" className="input input-bordered" value={shippingCost} onChange={(e) => setShippingCost(Number(e.target.value))} name="shippingCost" />
-                </div>
+              <div className="flex justify-between">
+                <Link href="/admin/transaction" className="btn btn-error">
+                  Back
+                </Link>
 
-                <div className="flex justify-between">
-                    <Link href="/admin/transaction" className="btn btn-error">Back</Link>
-
-                    <button className="btn btn-primary" type="submit">Add</button>
-                </div>
+                <button className="btn btn-primary" type="submit">
+                  Add
+                </button>
+              </div>
             </form>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="card mt-4">
+          <div className="card-body">
+            <h2 className="text-lg font-bold mb-2">Transaction Summary</h2>
+
+            <table className="table w-full">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedItems.map((selectedItem, index) => {
+                    const item = items.find((item) => item.id === selectedItem.itemId)
+
+                    return (
+                        <tr key={index}>
+                        <td>{item?.name}</td>
+                        <td>{item?.price}</td>
+                        <td>{selectedItem.quantity}</td>
+                        <td>{(item?.price || 0) * selectedItem.quantity}</td>
+                        </tr>
+                    )
+                })}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan={3}>Discount</td>
+                  <td>{discount}</td>
+                </tr>
+                <tr>
+                  <td colSpan={3}>Shipping Cost</td>
+                  <td>{shippingCost}</td>
+                </tr>
+                <tr>
+                  <td colSpan={3}>Total Price</td>
+                  <td>{totalPrice}</td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </div>
       </section>
