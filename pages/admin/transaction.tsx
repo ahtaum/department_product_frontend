@@ -37,7 +37,7 @@ export default function Transaction() {
 
     // Search Items
     const searchItems = () => {
-        const searchParam = ["no_transaksi", "nama_Customer"]
+        const searchParam = ["transaction_no", "customer_name"]
         
         return data?.filter((dt: any) => {
             return searchParam.some((newData) => {
@@ -73,28 +73,28 @@ export default function Transaction() {
                         <thead>
                             <tr>
                                 <th></th> 
-                                <th>No Transaksi</th> 
-                                <th>Tanggal</th> 
-                                <th>Nama Customer</th> 
-                                <th>Jumlah Barang</th>
+                                <th>Transaction Number</th> 
+                                <th>Date</th> 
+                                <th>Customer Name</th> 
+                                <th>Quantity</th>
                                 <th>Sub Total</th>
-                                <th>Diskon</th>
-                                <th>Ongkir</th>
-                                <th>Total</th>
+                                <th>Discount</th>
+                                <th>Shipping Cost</th>
+                                <th>Total Cost</th>
                             </tr>
                         </thead> 
                         <tbody>
                             { data && searchItems().map((transaction: any, index: number) => (
                                 <tr key={index}>
                                     <th>{ index + 1 }</th> 
-                                    <td>{ transaction.no_transaksi }</td> 
-                                    <td>{ transaction.tanggal }</td> 
-                                    <td>{ transaction.nama_Customer }</td> 
-                                    <td>{ transaction.jumlah_barang }</td> 
-                                    <td>{ transaction.sub_total }</td> 
-                                    <td>{ transaction.diskon }</td> 
-                                    <td>{ transaction.ongkir }</td> 
-                                    <td>{ transaction.total }</td> 
+                                    <td>{ transaction.transaction_no }</td> 
+                                    <td>{ transaction.date }</td> 
+                                    <td>{ transaction.customer_name }</td> 
+                                    <td>{ transaction.quantity }</td> 
+                                    <td>{ transaction.subtotal }</td> 
+                                    <td>{ transaction.discount }</td> 
+                                    <td>{ transaction.shipping_cost }</td> 
+                                    <td>{ transaction.total_cost }</td> 
                                     {/* <td>{ formatDistanceToNow(new Date(transaction.updated_at), { addSuffix: true }) }</td> */}
                                     {/* <td className="flex gap-4">
                                         <Link href={`/admin/item/${item.id}`} className="badge badge-success gap-2 p-3 hover:text-white"><FiEdit /></Link>
