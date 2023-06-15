@@ -10,7 +10,7 @@ or
 
 this will install all package
 
-type in console or terminal for running app in local environment :
+type in console or terminal for running **frontend** app in local environment :
 
     npm run dev
 
