@@ -16,7 +16,7 @@ export const Menu = () => {
     }
 
     return (
-        <div className="navbar bg-base-100 container">
+        <div className="navbar bg-base-100 container z-10">
             <div className="navbar-start">
                 <div className="dropdown">
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
