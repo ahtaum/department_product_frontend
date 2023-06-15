@@ -27,13 +27,6 @@ export default function Dashboard() {
                         <p>{ email }</p>
                     </div>
                 </div>
-                
-                <div className="card lg:w-96 w-full bg-base-100 shadow-xl">
-                    <div className="card-body text-center">
-                        <h2 className="card-title mx-auto">Total Posts</h2>
-                        <p className="my-8 text-5xl">0</p>
-                    </div>
-                </div>
             </div>
 
         </section>
