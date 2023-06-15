@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import axios from 'axios'
-import { FiTrash, FiPlus, FiEdit } from 'react-icons/fi'
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import { FiPlus } from 'react-icons/fi'
+import { format } from 'date-fns'
 import AdminLayout from '@/layouts/AdminLayout'
 import UrlApi from '@/config/urlApi'
 import Cookies from 'js-cookie'
@@ -72,11 +72,11 @@ export default function Transaction() {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th></th> 
+                                <th>No</th> 
                                 <th>Transaction Number</th> 
-                                <th>Date</th> 
+                                <th>Date Transaction</th> 
                                 <th>Customer Name</th> 
-                                <th>Quantity</th>
+                                <th>Quantity Items</th>
                                 <th>Sub Total</th>
                                 <th>Discount</th>
                                 <th>Shipping Cost</th>
@@ -88,18 +88,13 @@ export default function Transaction() {
                                 <tr key={index}>
                                     <th>{ index + 1 }</th> 
                                     <td>{ transaction.transaction_no }</td> 
-                                    <td>{ transaction.date }</td> 
+                                    <td>{ format(new Date(transaction.date), 'dd MMMM yyyy, HH:mm:ss') }</td>
                                     <td>{ transaction.customer_name }</td> 
                                     <td>{ transaction.quantity }</td> 
                                     <td>{ transaction.subtotal }</td> 
                                     <td>{ transaction.discount }</td> 
                                     <td>{ transaction.shipping_cost }</td> 
-                                    <td>{ transaction.total_cost }</td> 
-                                    {/* <td>{ formatDistanceToNow(new Date(transaction.updated_at), { addSuffix: true }) }</td> */}
-                                    {/* <td className="flex gap-4">
-                                        <Link href={`/admin/item/${item.id}`} className="badge badge-success gap-2 p-3 hover:text-white"><FiEdit /></Link>
-                                         <label htmlFor="delete-modal" className="badge badge-error gap-2 p-3 cursor-pointer hover:text-white" onClick={ () => setId(item.id) }><FiTrash /></label>
-                                    </td> */}
+                                    <td>{ transaction.total_cost }</td>
                                 </tr>
                             )) }
                         </tbody>
